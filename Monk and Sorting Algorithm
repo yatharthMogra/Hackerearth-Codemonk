@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+#define lld long long int
+void merge(lld a[],int b[],int start,int mid,int end){
+	int n=(end-start+1),p=start,q=mid+1;
+	int brr[n];
+	lld arr[n];
+	for(int i=0;i<n;i++){
+		if(p>mid){
+			arr[i]=a[q];
+			brr[i]=b[q++];
+		}
+		else if(q>end){
+			arr[i]=a[p];
+			brr[i]=b[p++];
+		}
+		else if(b[q]<b[p]){
+			arr[i]=a[q];
+			brr[i]=b[q++];
+		}
+		else{
+			arr[i]=a[p];
+			brr[i]=b[p++];
+		}
+	}
+	for(int i=0;i<n;i++){
+		a[start]=arr[i];
+		b[start++]=brr[i];
+	}
+}
+void merge_sort(lld a[],int b[],int start,int end)
+{
+	if(start!=end){
+		int mid=(start+end)>>1;
+		merge_sort(a,b,start,mid);
+		merge_sort(a,b,mid+1,end);
+		merge(a,b,start,mid,end);
+	}
+}
+int main() {
+	// your code goes here
+	int n;cin>>n;
+	lld a[n],x=0,k=1;
+	int b[n];
+	for(int i=0;i<n;i++){
+		scanf("%lld",&a[i]);
+		if(a[i]>x){
+			x=a[i];
+		}
+	}
+	while(x/k){
+		for(int i=0;i<n;i++){
+			b[i]=(a[i]/k)%100000;
+		}
+		merge_sort(a,b,0,n-1);
+		for(int i=0;i<n;i++){
+			printf("%lld ",a[i]);
+		}
+		printf("\n");
+		k*=100000;
+	}
+	
+	return 0;
+}
